@@ -13,6 +13,10 @@ BOOTSTRAP : Dossier contenant CSS JS bootstrapt si le CDN ne fonctionne pas. NE 
 CSS
 JS
 PAGE : Contient les fichier "header.php" et "footer.php". Si bibliothèque js/ fichier js/ ou css à inclure --> header.php
+<<<<<<< HEAD
 ne pas toucher "footer.php"
+=======
+Si pied de page à modifier --> "footer.php"
+>>>>>>> b9bc64d5080d396111053f71205ca4d2e462240e
 "page.php" --> modèle : incluant "header.php" et "footer.php" (à copier coller)
 
