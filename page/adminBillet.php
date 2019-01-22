@@ -3,6 +3,13 @@ require_once('libs/global.php');
 
 // checkAccess();
 
+if(isset($_GET['suppr']))
+{
+    executeQuery('DELETE FROM billet WHERE id = :id',
+        array('id' => $_GET['suppr'])
+    );
+}
+
 $actualCarnet = $_GET['goto'];
 
 
@@ -22,7 +29,7 @@ $listBillet = find ('SELECT * FROM billet');
 	?>
 
 <?php
-echo '<a href="editBillet.php?goto=' . $actualCarnet . '" class="btn btn-danger">Ajouter un billet</a>'
+echo '<a href="editBillet.php?addto=' . $actualCarnet . '" class="btn btn-danger">Ajouter un billet</a>'
 ?>
 
 </div>
