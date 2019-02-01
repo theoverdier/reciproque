@@ -1,31 +1,51 @@
 <?php
 require_once('libs/global.php');
-require_once 'header.php';
+require_once 'page/header.php';
+
+
+if (isset ($_POST['mon_fichier']) && $_FILES['mon_fichier']['error']) {
+  switch ($_FILES['mon_fichier']['error']){
+    case 1: // UPLOAD_ERR_INI_SIZE
+        echo "Le fichier dépasse la limite autorisée par le serveur (fichier php.ini) !";
+        break;
+    case 2: // UPLOAD_ERR_FORM_SIZE
+        echo "Le fichier dépasse la limite autorisée dans le formulaire HTML !";
+        break;
+    case 3: // UPLOAD_ERR_PARTIAL
+        echo "L'envoi du fichier a été interrompu pendant le transfert !";
+        break;
+    case 4: // UPLOAD_ERR_NO_FILE
+        echo "Le fichier que vous avez envoyé a une taille nulle !";
+        break;
+    }
+} else {
+    $name = uniqid();
+    $extension = strrchr($_FILES['mon_fichier']['name'] ,'.');
+    $nom = $_FILES['mon_fichier']['tmp_name'];
+    $nomdestination = 'images/'.$name.$extension;
+    move_uploaded_file($nom, $nomdestination);
+
+    executeQuery(
+        'INSERT INTO photo(nom) VALUES(:name)',
+        array(
+            'name' => $name.$extension
+        )
+    );
+}
+
 ?>
 
 <div id="content">
-	<nav class="navbar fixed-top navbar-expand-sm">
-        <a class="navbar-brand" href="index.php">MyGiftList</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#menu" aria-controls="menu" aria-expanded="false" aria-label="Toggle navigation">
-            <i class="fas fa-bars"></i>
-        </button>
-        <div class="collapse navbar-collapse" id="menu">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item active"><a class="nav-link" href="index.php">Home</a></li>
-                <li class="nav-item"><a class="nav-link" href="admin.php">Administration</a></li>
-        <?php
-        if (isLoggedIn()==true)
-        {
-            echo '<li class="nav-item"><a class="nav-link" href="logout.php">Se déconnecter</a></li>';
-        }  
-        ?>
+    <form action="index.php" method="post" enctype="multipart/form-data">
+        <!--<input type="hidden" name="MAX_FILE_SIZE" value="50000">-->
+        <label>Votre fichier</label> :
+        <input type="file" name="mon_fichier"><br>
+        <input type="submit" value="Envoyer">
+    </form>
 
-
-            </ul>
-        </div>
-    </nav>
 </div>
 
+
 <?php
-require_once 'footer.php';
+require_once 'page/footer.php';
 ?>
