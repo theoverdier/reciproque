@@ -28,12 +28,12 @@ if (isset ($_POST['mon_fichier']) && $_FILES['mon_fichier']['error']) {
     $nom = $_FILES['mon_fichier']['tmp_name'];
     $nomdestination = 'images/'.$name.$extension;
     move_uploaded_file($nom, $nomdestination);
-    executeQuery(
-        'INSERT INTO photo(nom) VALUES(:name)',
-        array(
-            'name' => htmlentities($name.$extension)
-        )
-    );
+    // executeQuery(
+    //     'INSERT INTO photo(nom) VALUES(:name)',
+    //     array(
+    //         'name' => htmlentities($name.$extension)
+    //     )
+    // );
 }
 
 ?>
