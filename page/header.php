@@ -11,3 +11,20 @@
 	<script type="text/javascript" src="js/app.js"></script>
 </head>
 <body>
+	 <nav class="navbar fixed-top navbar-expand-sm">
+        <a class="navbar-brand" href="admin.php">Mes carnets</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#menu" aria-controls="menu" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="menu">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item"><a class="nav-link" href="admin.php">Mon profil</a></li>
+                <?php
+                if (isLoggedIn()==true)
+                {
+                    echo '<li class="nav-item"><a class="nav-link" href="logout.php">Se déconnecter</a></li>';
+                }  
+                ?>
+            </ul>
+        </div>
+    </nav>
