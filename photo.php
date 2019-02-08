@@ -1,11 +1,10 @@
 <?php
 require_once('libs/global.php');
 require_once 'page/header.php';
-$name = find ('SELECT * FROM photo');
+$listePhoto = find ('SELECT * FROM photo');
 
 if (isset ($_POST['mon_fichier']) && $_FILES['mon_fichier']['error']) {
 
-    echo 'coucou';
   switch ($_FILES['mon_fichier']['error']){
     case 1: // UPLOAD_ERR_INI_SIZE
         echo "Le fichier dépasse la limite autorisée par le serveur (fichier php.ini) !";
@@ -22,18 +21,17 @@ if (isset ($_POST['mon_fichier']) && $_FILES['mon_fichier']['error']) {
     }
 } else {
 
-
-    $name = uniqid();
-    $extension = strrchr($_FILES['mon_fichier']['name'] ,'.');
-    $nom = $_FILES['mon_fichier']['tmp_name'];
-    $nomdestination = 'images/'.$name.$extension;
-    move_uploaded_file($nom, $nomdestination);
-    // executeQuery(
-    //     'INSERT INTO photo(nom) VALUES(:name)',
-    //     array(
-    //         'name' => htmlentities($name.$extension)
-    //     )
-    // );
+        $name = uniqid();
+        $extension = strrchr($_FILES['mon_fichier']['name'] ,'.');
+        $nom = $_FILES['mon_fichier']['tmp_name'];
+        $nomdestination = 'images/'.$name.$extension;
+        move_uploaded_file($nom, $nomdestination);
+        executeQuery(
+            'INSERT INTO photo(nom) VALUES(:name)',
+            array(
+                'name' => htmlentities($name.$extension)
+            )
+        );
 }
 
 ?>
@@ -43,7 +41,10 @@ if (isset ($_POST['mon_fichier']) && $_FILES['mon_fichier']['error']) {
 <p>
     <br><br><br>
     <?php
-    echo "<img src = 'images/".$name[0]['nom']."'/>"
+    for($i=0; $i <= sizeof($listePhoto); $i++){
+        echo "<img src = 'images/".$listePhoto[$i]['nom']."'/>";
+    }
+
     ?>
 </p>
     
