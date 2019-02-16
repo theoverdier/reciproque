@@ -1,11 +1,10 @@
 <?php
 require_once('libs/global.php');
 require_once 'page/header.php';
-$name = find ('SELECT * FROM photo');
+
+$listePhoto = find ('SELECT * FROM photo');
 
 if (isset ($_POST['mon_fichier']) && $_FILES['mon_fichier']['error']) {
-
-    echo 'coucou';
   switch ($_FILES['mon_fichier']['error']){
     case 1: // UPLOAD_ERR_INI_SIZE
         echo "Le fichier dépasse la limite autorisée par le serveur (fichier php.ini) !";
@@ -21,33 +20,25 @@ if (isset ($_POST['mon_fichier']) && $_FILES['mon_fichier']['error']) {
         break;
     }
 } else {
-
-
-    $name = uniqid();
-    $extension = strrchr($_FILES['mon_fichier']['name'] ,'.');
-    $nom = $_FILES['mon_fichier']['tmp_name'];
-    $nomdestination = 'images/'.$name.$extension;
-    move_uploaded_file($nom, $nomdestination);
-    // executeQuery(
-    //     'INSERT INTO photo(nom) VALUES(:name)',
-    //     array(
-    //         'name' => htmlentities($name.$extension)
-    //     )
-    // );
-}
-
-?>
-
-<div id="content">
-
-<p>
-    <br><br><br>
-    <?php
-    echo "<img src = 'images/".$name[0]['nom']."'/>"
-    ?>
-</p>
     
-</div>
+        # code...
+        $name = uniqid();
+        $extension = strrchr($_FILES['mon_fichier']['name'] ,'.');
+        $nom = $_FILES['mon_fichier']['tmp_name'];
+        $nomdestination = 'images/'.$name.$extension;
+        move_uploaded_file($nom, $nomdestination);
+        executeQuery(
+            'INSERT INTO photo(nom, current_carnet, userid, current_billet) VALUES(:name, :current_carnet, :userid, :current_billet)',
+            array(
+                'name' => htmlentities($name.$extension),
+                'current_carnet' => $actualCarnet,
+                'userid' => htmlentities($_SESSION['userid']),
+                'current_billet' => $billet['id']
+            )
+        );
+    
+ }
+?>
 
 <div id="content">
     <form action="photo.php" method="post" enctype="multipart/form-data">
@@ -58,7 +49,6 @@ if (isset ($_POST['mon_fichier']) && $_FILES['mon_fichier']['error']) {
     </form>
 
 </div>
-
 
 <?php
 require_once 'page/footer.php';

@@ -24,7 +24,7 @@ $listBillet = find ('SELECT * FROM billet WHERE nom_carnet="'.$actualCarnet.'"AN
 <div class="container">
 	<h1>Ma liste de billet</h1><hr>
 	<a href="editBillet.php?addto=<?php echo $actualCarnet; ?>" class="btn btn-success">Ajouter un billet</a>
-	<a href="photo.php" class="btn btn-success">Test photo</a>
+<!-- 	<a href="photo.php" class="btn btn-success">Test photo</a> -->
 	<div class="row">
 
 
@@ -57,29 +57,33 @@ $listBillet = find ('SELECT * FROM billet WHERE nom_carnet="'.$actualCarnet.'"AN
 						      </div>
 						      <div class="modal-body">
 						        <!-- Carousel -->
-								    <div id="carouselExampleControls3" class="carousel slide" data-ride="carousel" data-interval="false">
+								    <div id="carouselExampleControls'. $billet['id'] .'" class="carousel slide" data-ride="carousel" data-interval="false">
 									    <div class="carousel-inner">
 
 											<div class="carousel-item active">
 						                      <div class="col-lg-8 mx-auto" class="d-block w-100">
 						                        <h2 class="text-secondary text-uppercase mb-0">Créations digitales</h2>
 						                        <hr class="star-dark mb-5">
-						                        <p class="mb-5">Cette section présente quelques réalisations personnelles numériques créées grâce à différents logiciels comme Processing, After effect ou encore Illustrator</p>
+						                        <p class="mb-5">Ceci est le billet principale</p>
+						                        ';
+						                        require('photo.php');
+				?>
+
 						                      </div>
-					                        </div>';
-				?>
-				<?php
-											foreach($photo as $value){
-						                    echo '<div class="carousel-item"> <p>' . $value . '</p> </div>';
-						                }
-				?>
+					                        </div>
+				
+											<?php
+											
+												foreach($listePhoto as $lesphotos){
+											        echo '<div class="carousel-item"><img src = "images/'.$lesphotos['nom'].'"/></div>';
+											    }
 									                    
-									    </div>
-					                  <a class="carousel-control-prev" href="#carouselExampleControls3" role="button" data-slide="prev">
+									    echo '</div>
+					                  <a class="carousel-control-prev" href="#carouselExampleControls'. $billet['id'] .'" role="button" data-slide="prev">
 					                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
 					                    <span class="sr-only">Previous</span>
 									  </a>
-					                  <a class="carousel-control-next" href="#carouselExampleControls3" role="button" data-slide="next">
+					                  <a class="carousel-control-next" href="#carouselExampleControls'. $billet['id'] .'" role="button" data-slide="next">
 					                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
 					                    <span class="sr-only">Next</span>
 					                  </a>
@@ -93,8 +97,8 @@ $listBillet = find ('SELECT * FROM billet WHERE nom_carnet="'.$actualCarnet.'"AN
 						</div>
 
             </div>
-       	 </div>
-	<?php
+       	 </div>';
+	
 		//compteur colone pour automatiser les sauts à la ligne tout les 3 billets
 	    $rowCount++;
 	    if($rowCount % $numOfCols == 0) echo '</div><div class="row">';
