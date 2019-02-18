@@ -20,7 +20,7 @@ if(isset($_GET['suppr']))
 
 $listBillet = find ('SELECT * FROM billet WHERE carnet_id='.$actualCarnet.' AND userid="'.$_SESSION['userid'].'"');
 
-if(isset ($_POST['fichier'])) {
+if(isset ($_POST['billet'])) {
 	if ($_FILES['fichier']['error']) {
   		switch ($_FILES['mon_fichier']['error']) {
 		    case 1: // UPLOAD_ERR_INI_SIZE
@@ -42,16 +42,16 @@ if(isset ($_POST['fichier'])) {
 	    $extension = strrchr($_FILES['fichier']['name'] ,'.');
 	    $nom = $_FILES['fichier']['tmp_name'];
 	    $destination = 'images/'.$name.$extension;
-	    var_dump('fdfhdjkfhkds');
 	    move_uploaded_file($nom, $destination);
 	    executeQuery(
-	        'INSERT INTO photo(nom, billet_id) VALUES(:name, :current_billet)',
+	        'INSERT INTO photo(nom, billet_id) VALUES(:name, :billet_id)',
 	        array(
 	            'name' => htmlentities($name.$extension),
 	            'billet_id' => $_POST['billet']
 	        )
 	    );
-	    require_once('adminBillet.php?goto='.$actualCarnet);
+
+	    header('location: adminBillet.php?goto='.$actualCarnet);
 	}
 }
 
